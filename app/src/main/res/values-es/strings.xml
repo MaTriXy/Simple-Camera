@@ -1,24 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Simple Camera</string>
-    <string name="app_launcher_name">Simple Camera</string>
+    <string name="app_name">Cámara Simple</string>
+    <string name="app_launcher_name">Cámara</string>
+    <string name="capture_mode">Modo de captura</string>
+    <string name="maximize_quality">Maximiza la calidad</string>
+    <string name="minimize_latency">Minimizar la latencia</string>
+    <!-- Errors -->
     <string name="camera_unavailable">Cámara no disponible</string>
     <string name="camera_open_error">Ha ocurrido un error al acceder a la cámara</string>
     <string name="video_creating_error">Ha ocurrido un error creando el archivo de vídeo</string>
-    <string name="video_mode_error">Ha fallado el cambio a modo de vídeo</string>
+    <string name="video_mode_error">Error al cambiar al modo de video</string>
     <string name="save_error_internal_storage">Ha ocurrido un error, se ha cambiado la carpeta de destino al almacenamiento interno</string>
-    <string name="camera_switch_error">Ha fallado el cambio de cámara</string>
+    <string name="camera_switch_error">Cámara Simple</string>
     <string name="click_to_resume_preview">Haga clic en la imagen para reanudar la vista previa</string>
-    <string name="photo_not_saved">The photo could not be saved</string>
-    <string name="setting_resolution_failed">Setting proper resolution failed</string>
-
-    <!-- Other aspect ratio -->
-    <string name="other">otro</string>
-
+    <string name="photo_not_saved">No se pudo guardar la imagen</string>
+    <string name="setting_resolution_failed">Fallo en la configuración de la resolución apropiada</string>
+    <string name="video_recording_failed">Grabación de video fallida, intenta usar una diferente resolución</string>
+    <string name="camera_in_use_error">La cámara está siendo utilizada por otra aplicación, por favor cierra la aplicación e inténtalo de nuevo</string>
+    <string name="camera_configure_error">Se ha producido un error al configurar la cámara</string>
+    <string name="camera_disabled_by_admin_error">La cámara está desactivada por el administrador</string>
+    <string name="camera_dnd_error">El modo \"No molestar\" está activado. Por favor, desactívelo e inténtelo de nuevo</string>
+    <string name="photo_capture_failed">Fallo en la captura de fotos</string>
+    <string name="video_capture_insufficient_storage_error">La grabación de vídeo ha fallado debido a un almacenamiento insuficiente</string>
+    <!-- Camera Screen Icons Content Description -->
+    <string name="toggle_photo_video">Cambiar modo foto/vídeo</string>
+    <string name="change_resolution">Cambiar Resolución</string>
+    <string name="view_last_media">Ver últimos archivos capturados</string>
+    <string name="toggle_camera">Cambiar cámara frontal/trasera</string>
+    <string name="toggle_flash">Cambiar a modo linterna</string>
+    <string name="toggle_timer">Alternar el modo de temporizador</string>
     <!-- FAQ -->
-    <string name="faq_1_title">What photo compression quality should I set?</string>
-    <string name="faq_1_text">It depends on your goal. For generic purposes most people advise using 75%-80%, when the image is still really good quality, but the file size is reduced drastically compared to 100%.</string>
-
+    <string name="faq_1_title">¿Qué calidad de compresión de foto debería establecer?</string>
+    <string name="faq_1_text">Depende de tu objetivo. Para propósitos generales, la mayoría de las personas aconsejan usar 75%-80%, y la imagen seguirá siendo de calidad realmente buena, pero el tamaño del archivo es reducido drásticamente comparado con el 100%.</string>
     <!-- Settings -->
     <string name="save_photos">Guardar fotografías y vídeos en</string>
     <string name="show_preview">Mostrar una vista previa de la foto después de capturar</string>
@@ -26,29 +39,17 @@
     <string name="back_camera">Resolución de la cámara trasera</string>
     <string name="front_camera">Resolución de la cámara frontal</string>
     <string name="photo">Foto</string>
-    <string name="video">Vídeo</string>
+    <string name="video">Video</string>
     <string name="focus_before_capture">Enfocar antes de la captura</string>
     <string name="volume_buttons_as_shutter">Utilizar los botones de volumen como obturador</string>
-    <string name="turn_flash_off_at_startup">Turn flash off at startup</string>
-    <string name="flip_front_camera_photos_horizontally">Flip front camera photos horizontally</string>
-    <string name="keep_settings_visible">Keep setting buttons visible</string>
-    <string name="always_open_back_camera">Always open the app with the Back camera</string>
-    <string name="save_photo_metadata">Save photo exif metadata</string>
-    <string name="photo_compression_quality">Photo compression quality</string>
-
-    <!-- Strings displayed only on Google Playstore. Optional, but good to have -->
-    <!-- Short description has to have less than 80 chars -->
-    <string name="app_short_description">Una cámara con flash, zoom y sin anuncios.</string>
-    <string name="app_long_description">
-        La cámara se puede usar para realizar tanto fotografías como para grabar vídeos. Usted puede conmutar entre la cámara delantera y trasera, modificar la ruta de guardado y establecer el límite de resolución. Se puede activar y desactivar el flash, hacer zoom&#8230; Mientras se graba un vídeo el flash puede ser usado como una linterna.
-
-        Si usted quiere lanzar esta aplicación presionando el botón físico de cámara, puede que tenga que deshabilitar la aplicación nativa de cámara (Ajustes -> Aplicaciones -> Cámara -> Deshabilitar).
-
-        No contiene publicidad ni permisos innecesarios. Es totalmente libre, proporciona colores personalizables.
-
-        Esta aplicación es tan solo una pequeña parte de una serie de aplicaciones. Puede encontrar el resto en http://www.simplemobiletools.com
-    </string>
-
+    <string name="turn_flash_off_at_startup">Apagar flash al iniciar</string>
+    <string name="flip_front_camera_photos_horizontally">Voltee las fotos de la cámara frontal horizontalmente</string>
+    <string name="keep_settings_visible">Mantenga los botones de configuración visibles</string>
+    <string name="always_open_back_camera">Abra siempre la aplicación con la cámara trasera</string>
+    <string name="save_photo_metadata">Guardar los metadatos exif de las fotos</string>
+    <string name="save_photo_video_location">Guardar la ubicación de las fotos y los vídeos</string>
+    <string name="photo_compression_quality">Calidad de compresión de la fotográfica</string>
+    <string name="shutter">Obturador</string>
     <!--
         Haven't found some strings? There's more at
         https://github.com/SimpleMobileTools/Simple-Commons/tree/master/commons/src/main/res

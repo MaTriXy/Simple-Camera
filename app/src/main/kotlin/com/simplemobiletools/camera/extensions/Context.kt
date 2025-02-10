@@ -1,18 +1,18 @@
 package com.simplemobiletools.camera.extensions
 
 import android.content.Context
-import android.graphics.Point
-import android.view.WindowManager
 import com.simplemobiletools.camera.helpers.Config
+import com.simplemobiletools.commons.extensions.hasPermission
+import com.simplemobiletools.commons.helpers.PERMISSION_ACCESS_COARSE_LOCATION
+import com.simplemobiletools.commons.helpers.PERMISSION_ACCESS_FINE_LOCATION
 import java.io.File
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.Locale
 
 val Context.config: Config get() = Config.newInstance(applicationContext)
 
-internal val Context.windowManager: WindowManager get() = getSystemService(Context.WINDOW_SERVICE) as WindowManager
-
-fun Context.getOutputMediaFile(isPhoto: Boolean): String {
+fun Context.getOutputMediaFilePath(isPhoto: Boolean): String {
     val mediaStorageDir = File(config.savePhotosFolder)
 
     if (!mediaStorageDir.exists()) {
@@ -21,26 +21,31 @@ fun Context.getOutputMediaFile(isPhoto: Boolean): String {
         }
     }
 
-    val timestamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+    val mediaName = getRandomMediaName(isPhoto)
     return if (isPhoto) {
-        "${mediaStorageDir.path}/IMG_$timestamp.jpg"
+        "${mediaStorageDir.path}/$mediaName.jpg"
     } else {
-        "${mediaStorageDir.path}/VID_$timestamp.mp4"
+        "${mediaStorageDir.path}/$mediaName.mp4"
+    }
+}
+fun Context.getOutputMediaFileName(isPhoto: Boolean): String {
+    val mediaName = getRandomMediaName(isPhoto)
+    return if (isPhoto) {
+        "$mediaName.jpg"
+    } else {
+        "$mediaName.mp4"
     }
 }
 
-val Context.usableScreenSize: Point
-    get() {
-        val size = Point()
-        windowManager.defaultDisplay.getSize(size)
-        return size
+fun getRandomMediaName(isPhoto: Boolean): String {
+    val timestamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+    return if (isPhoto) {
+        "IMG_$timestamp"
+    } else {
+        "VID_$timestamp"
     }
+}
 
-val Context.realScreenSize: Point
-    get() {
-        val size = Point()
-        windowManager.defaultDisplay.getRealSize(size)
-        return size
-    }
-
-val Context.navBarHeight: Int get() = realScreenSize.y - usableScreenSize.y
+fun Context.checkLocationPermission(): Boolean {
+    return hasPermission(PERMISSION_ACCESS_FINE_LOCATION) || hasPermission(PERMISSION_ACCESS_COARSE_LOCATION)
+}

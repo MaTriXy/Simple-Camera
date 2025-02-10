@@ -3,34 +3,34 @@ package com.simplemobiletools.camera.helpers
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
-import android.hardware.Camera
-import android.media.ExifInterface
 import android.net.Uri
 import android.os.AsyncTask
 import android.os.Environment
+import androidx.exifinterface.media.ExifInterface
 import com.simplemobiletools.camera.R
 import com.simplemobiletools.camera.activities.MainActivity
-import com.simplemobiletools.camera.extensions.compensateDeviceRotation
 import com.simplemobiletools.camera.extensions.config
-import com.simplemobiletools.camera.extensions.getOutputMediaFile
-import com.simplemobiletools.camera.extensions.getPreviewRotation
+import com.simplemobiletools.camera.extensions.getOutputMediaFilePath
 import com.simplemobiletools.commons.extensions.*
-import com.simplemobiletools.commons.helpers.isNougatPlus
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.OutputStream
 
-class PhotoProcessor(val activity: MainActivity, val uri: Uri?, val currCameraId: Int, val deviceOrientation: Int) : AsyncTask<ByteArray, Void, String>() {
+class PhotoProcessor(
+    val activity: MainActivity, val saveUri: Uri?, val deviceOrientation: Int, val previewRotation: Int, val isUsingFrontCamera: Boolean,
+    val isThirdPartyIntent: Boolean
+) :
+    AsyncTask<ByteArray, Void, String>() {
 
     override fun doInBackground(vararg params: ByteArray): String {
         var fos: OutputStream? = null
         val path: String
         try {
-            path = if (uri != null) {
-                uri.path
+            path = if (saveUri != null) {
+                saveUri.path!!
             } else {
-                activity.getOutputMediaFile(true)
+                activity.getOutputMediaFilePath(true)
             }
 
             if (path.isEmpty()) {
@@ -47,14 +47,14 @@ class PhotoProcessor(val activity: MainActivity, val uri: Uri?, val currCameraId
 
             val photoFile = File(path)
             if (activity.needsStupidWritePermissions(path)) {
-                if (!activity.hasProperStoredTreeUri()) {
+                if (!activity.hasProperStoredTreeUri(activity.isPathOnOTG(path))) {
                     activity.toast(R.string.save_error_internal_storage)
                     activity.config.savePhotosFolder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).toString()
                     return ""
                 }
 
                 var document = activity.getDocumentFile(path.getParentPath())
-                document = document?.createFile("", path.substring(path.lastIndexOf('/') + 1))
+                document = document?.createFile("", path.substring(path.lastIndexOf('/') + 1)) ?: activity.getDocumentFile(path)
                 if (document == null) {
                     activity.toast(R.string.save_error_internal_storage)
                     return ""
@@ -62,56 +62,81 @@ class PhotoProcessor(val activity: MainActivity, val uri: Uri?, val currCameraId
 
                 fos = activity.contentResolver.openOutputStream(document.uri)
             } else {
-                fos = if (uri == null) {
+                fos = if (saveUri == null) {
                     FileOutputStream(photoFile)
                 } else {
-                    activity.contentResolver.openOutputStream(uri)
+                    activity.contentResolver.openOutputStream(saveUri)
                 }
             }
 
-            var image = BitmapFactory.decodeByteArray(data, 0, data.size)
-            val exif = ExifInterface(photoFile.toString())
+            val exif = try {
+                ExifInterface(path)
+            } catch (e: Exception) {
+                null
+            }
 
-            val deviceRot = deviceOrientation.compensateDeviceRotation(currCameraId)
-            val previewRot = activity.getPreviewRotation(currCameraId)
-            val orient = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED)
+            val orient = exif?.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED)
+                ?: ExifInterface.ORIENTATION_UNDEFINED
+
             val imageRot = orient.degreesFromOrientation()
 
-            val totalRotation = (imageRot + deviceRot + previewRot) % 360
-            if (activity.isPathOnSD(path) && !isNougatPlus()) {
+            val deviceRot = compensateDeviceRotation(deviceOrientation)
+            var image = BitmapFactory.decodeByteArray(data, 0, data.size)
+            val totalRotation = (imageRot + deviceRot + previewRotation) % 360
+
+            if (isThirdPartyIntent) {
+                // make sure the image itself is rotated at third party intents
                 image = rotate(image, totalRotation)
             }
 
-            if (currCameraId == Camera.CameraInfo.CAMERA_FACING_FRONT && !activity.config.flipPhotos) {
-                val matrix = Matrix()
-                if (path.startsWith(activity.internalStoragePath)) {
-                    matrix.preScale(1f, -1f)
-                } else {
-                    matrix.preScale(-1f, 1f)
-                }
+            if (isUsingFrontCamera) {
+                if (activity.config.flipPhotos || deviceRot != 0) {
+                    val matrix = Matrix()
+                    val isPortrait = image.width < image.height
+                    matrix.preScale(if (isPortrait) -1f else 1f, if (isPortrait) 1f else -1f)
 
-                try {
-                    image = Bitmap.createBitmap(image, 0, 0, image.width, image.height, matrix, false)
-                } catch (e: OutOfMemoryError) {
-                    activity.toast(R.string.out_of_memory_error)
+                    try {
+                        image = Bitmap.createBitmap(image, 0, 0, image.width, image.height, matrix, false)
+                    } catch (e: OutOfMemoryError) {
+                        activity.toast(com.simplemobiletools.commons.R.string.out_of_memory_error)
+                    }
                 }
             }
 
             try {
-                image.compress(Bitmap.CompressFormat.JPEG, activity.config.photoQuality, fos)
-                activity.saveImageRotation(path, totalRotation)
+                if (fos != null) {
+                    image.compress(Bitmap.CompressFormat.JPEG, activity.config.photoQuality, fos)
+                }
+                if (!isThirdPartyIntent) {
+                    activity.saveImageRotation(path, totalRotation)
+                }
             } catch (e: Exception) {
                 activity.showErrorToast(e)
                 return ""
             }
 
-            if (activity.config.savePhotoMetadata) {
-                val fileExif = ExifInterface(path)
-                tempExif.copyTo(fileExif)
+            if (activity.config.savePhotoMetadata && !isThirdPartyIntent) {
+                val exifInterface = if (path.startsWith(activity.internalStoragePath)) {
+                    ExifInterface(path)
+                } else {
+                    val documentFile = activity.getSomeDocumentFile(path)
+                    if (documentFile != null) {
+                        val parcelFileDescriptor = activity.contentResolver.openFileDescriptor(documentFile.uri, "rw")
+                        val fileDescriptor = parcelFileDescriptor!!.fileDescriptor
+                        ExifInterface(fileDescriptor)
+                    } else {
+                        null
+                    }
+                }
+
+                if (exifInterface != null) {
+                    tempExif.copyTo(exifInterface)
+                }
             }
 
             return photoFile.absolutePath
         } catch (e: FileNotFoundException) {
+            activity.showErrorToast(e)
         } finally {
             fos?.close()
         }

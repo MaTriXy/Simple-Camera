@@ -1,6 +1,193 @@
 Changelog
 ==========
 
+Version 5.7.2 *(2023-09-05)*
+----------------------------
+
+ * Added some UI, translation and stability improvements
+
+Version 5.7.1 *(2023-08-30)*
+----------------------------
+
+ * Added some UI, translation and stability improvements
+
+Version 5.7.0 *(2023-07-26)*
+----------------------------
+
+ * Allow storing photo and video location
+ * Added some UI, translation and stability improvements
+
+Version 5.6.3 *(2023-05-14)*
+----------------------------
+
+ * Added some UI, translation and stability improvements
+
+Version 5.6.2 *(2023-02-07)*
+----------------------------
+
+ * Fixed an error with videos not being saved on SD cards
+ * Fixed status bar not being hidden on some devices
+ * Added some UI, translation and stability improvements
+
+Version 5.6.1 *(2023-01-15)*
+----------------------------
+
+ * Added some UI, translation and stability improvements
+
+Version 5.6.0 *(2022-12-19)*
+----------------------------
+
+ * Fixed a glitch with misplaced focus on click
+ * Use Material You theme by default on Android 12+
+ * Added some UI, translation and stability improvements
+
+Version 5.5.0 *(2022-11-27)*
+----------------------------
+
+ * Added a timer function for delayed capturing
+ * Added some stability, translation and UI improvements
+
+Version 5.4.3 *(2022-10-30)*
+----------------------------
+
+ * Added a crashfix
+
+Version 5.4.2 *(2022-10-29)*
+----------------------------
+
+ * Added some stability and translation improvements
+
+Version 5.4.1 *(2022-10-28)*
+----------------------------
+
+ * Added an Always on torch mode
+ * Allow toggling capture mode between min latency and max quality
+ * Allow toggling camera states with gestures only at the bottom part
+ * Added many translation, stability and UX improvements
+
+Version 5.4.0 *(2022-10-11)*
+----------------------------
+
+ * Rewrote the app from scratch, based it on CameraX
+ * Added Monochrome icon and Language picker support on Android 13+
+ * Adding a Get Simple Phone button into the About section
+ * Added many translation, stability and UX improvements
+
+Version 5.3.1 *(2021-04-19)*
+----------------------------
+
+ * Adding some translation and stability improvements
+
+Version 5.3.0 *(2020-12-29)*
+----------------------------
+
+ * Adding some translation and stability improvements
+ * Require Simple Thank You purchase for customizing the app colors
+
+Version 5.2.3 *(2020-11-07)*
+----------------------------
+
+ * Adding some translation and stability improvements
+
+Version 5.2.2 *(2020-09-19)*
+----------------------------
+
+ * Adding some translation, stability and ux improvements
+
+Version 5.2.1 *(2020-05-16)*
+----------------------------
+
+ * Adding some translation and stability improvements
+
+Version 5.2.0 *(2020-04-22)*
+----------------------------
+
+ * Fixed zooming with gestures, make it smoother
+ * Properly handle creating files on some SD cards
+ * Some other UI improvements
+
+Version 5.1.3 *(2020-03-09)*
+----------------------------
+
+ * Adding some translation improvements
+
+Version 5.1.2 *(2020-02-16)*
+----------------------------
+
+ * Added some stability, UI and translation improvements
+
+Version 5.1.1 *(2019-10-28)*
+----------------------------
+
+ * Improved proper preview size picking (by ThibG)
+ * Some other stability and translation improvements
+
+Version 5.1.0 *(2019-09-03)*
+----------------------------
+
+ * Fixed photos being wrongly rotated in some cases
+ * Added a black screen blinking in as an indication of photo capture
+ * Replaced icon with vectors for better quality and lower size
+
+Version 5.0.2 *(2019-07-06)*
+----------------------------
+
+ * Some translation improvements
+
+Version 5.0.1 *(2019-04-07)*
+----------------------------
+
+ * Fixed some smaller glitches
+ * Some stability and translation improvements
+
+Version 5.0.0 *(2018-10-18)*
+----------------------------
+
+ * Increased the min required Android OS version to 5 (Lollipop)
+ * Fixed crashing at vidoe recording, when saving on an SD card
+ * Replaced the G+ button with Reddit
+ * Multiple other stability, ux and translation improvements
+
+Version 4.2.0 *(2018-08-08)*
+----------------------------
+
+ * Fixed app freezing after photo capture on some devices
+ * Other UX and stability improvements
+
+Version 4.1.3 *(2018-07-10)*
+----------------------------
+
+ * Fixed some images not being saved properly
+ * Fixed too dark preview and images on some devices
+ * Couple other UX and stability improvements
+
+Version 4.1.2 *(2018-06-18)*
+----------------------------
+
+ * Fixed third party intent handling
+ * Fixed some glitch causing photos be captured fully zoomed in
+ * Added a couple extra error message displays
+
+Version 4.1.1 *(2018-06-12)*
+----------------------------
+
+ * Adding a couple crashfixes
+
+Version 4.1.0 *(2018-06-11)*
+----------------------------
+
+ * Fully rewrote the Camera functionality under the hood for Android 5+
+ * Properly save image EXIF data when selected so
+ * Fix the rotation of images returned to third party intents
+ * Removed the option to show the captured photo after taking it
+
+Version 4.0.0 *(2018-05-15)*
+----------------------------
+
+ * Allow customizing the app launcher icon color
+ * Split settings into subsections
+ * Couple smaller bugfixes and stability improvements
+
 Version 3.2.1 *(2018-04-08)*
 ----------------------------
 
